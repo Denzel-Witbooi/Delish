@@ -175,6 +175,7 @@ dependencies {
 
     implementation(Libs.INSETS)
     implementation(Libs.COIL)
+    implementation(Libs.COIL_COMPOSE)
     implementation(Libs.ACCOMPANIST_PERMISSION)
 
     androidTestImplementation(Libs.COMPOSE_TEST)

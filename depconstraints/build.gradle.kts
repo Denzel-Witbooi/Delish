@@ -51,11 +51,11 @@ val kotchi = "2.3.3"
 val datastore = "1.0.0-alpha05"
 val compose = "1.0.0-rc01"
 val composeNavigation = "2.4.0-alpha05"
-val composeActivity = "1.3.0"
-val composeConstraint = "1.0.0-beta01"
+val composeActivity = "1.3.1"
+val composeConstraint = "1.0.0-rc02"
 val composePaging = "1.0.0-alpha11"
 val composeViewModel = "1.0.0-alpha07"
-val accompanist = "0.15.0"
+val accompanist = "0.22.0-rc"
 val fragmentKtx = "1.3.2"
 val appCompat = "1.2.0-rc01"
 val faker = "1.0.2"
@@ -64,6 +64,7 @@ val turbine = "0.5.2"
 val playServiceLocation = "18.0.0"
 val googlePlayServicesMapsKtx = "3.0.0"
 val googlePlayServicesVision = "17.0.2"
+val coil = "1.4.0"
 
 dependencies {
     constraints {
@@ -136,7 +137,8 @@ dependencies {
         api("${Libs.COMPOSE_CONSTRAINT}:$composeConstraint")
         api("${Libs.COMPOSE_NAVIGATION}:$composeNavigation")
         api("${Libs.INSETS}:$accompanist")
-        api("${Libs.COIL}:$accompanist")
+        api("${Libs.COIL}:$coil")
+        api("${Libs.COIL_COMPOSE}:$coil")
         api("${Libs.ACCOMPANIST_PERMISSION}:$accompanist")
         api("${Libs.FAKER}:$faker")
         api("${Libs.HILT_BINDER}:$binder")
