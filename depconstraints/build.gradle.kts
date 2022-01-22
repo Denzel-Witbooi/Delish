@@ -28,11 +28,12 @@ val gson = "2.8.6"
 val hamcrest = "1.3"
 val hilt = Versions.HILT
 val hiltJetPack = "1.0.0-alpha01"
+val hiltCompose = "1.0.0-rc01"
 val junit = "4.13"
 val assertJVersion = "3.19.0"
 val mockkVersion = "1.10.6"
 val junitExt = "1.1.2"
-val lifecycle = "2.3.1"
+val lifecycle = "2.4.0"
 val lifecycleExt = "2.2.0"
 val material = "1.1.0"
 val mockito = "3.3.1"
@@ -49,7 +50,6 @@ val retrofit = "2.9.0"
 val moshi = "1.11.0"
 val kotchi = "2.3.3"
 val datastore = "1.0.0-alpha05"
-val compose = "1.0.0-rc01"
 val composeNavigation = "2.4.0-alpha05"
 val composeActivity = "1.3.1"
 val composeConstraint = "1.0.0-rc02"
@@ -85,6 +85,7 @@ dependencies {
         api("${Libs.HILT_COMPILER}:$hilt")
         api("${Libs.HILT_TESTING}:$hilt")
         api("${Libs.HILT_VIEWMODEL}:$hiltJetPack")
+        api("${Libs.HILT_COMPOSE}:$hiltCompose")
         api("${Libs.JUNIT}:$junit")
         api("${Libs.ASSERT_J}:$assertJVersion")
         api("${Libs.MOCKK}:$mockkVersion")
@@ -120,26 +121,28 @@ dependencies {
         api("${Libs.DATA_STORE}:$datastore")
         api("${Libs.LIFECYCLE_EXTENSION}:$lifecycleExt")
         api("${Libs.LIFECYCLE_RUN_TIME}:$lifecycle")
-        api("${Libs.COMPOSE_UI}:$compose")
-        api("${Libs.COMPOSE_UI_GRAPHICS}:$compose")
-        api("${Libs.COMPOSE_UI_TOOLING}:$compose")
-        api("${Libs.COMPOSE_FOUNDATION_LAYOUT}:$compose")
-        api("${Libs.COMPOSE_MATERIAL}:$compose")
-        api("${Libs.COMPOSE_RUNTIME_LIVEDATA}:$compose")
-        api("${Libs.COMPOSE_RUNTIME}:$compose")
-        api("${Libs.COMPOSE_ANIMATION}:$compose")
-        api("${Libs.COMPOSE_ANIMATION_CORE}:$compose")
-        api("${Libs.COMPOSE_ICON}:$compose")
+        api("${Libs.COMPOSE_UI}:${Versions.COMPOSE}")
+        api("${Libs.COMPOSE_UI_GRAPHICS}:${Versions.COMPOSE}")
+        api("${Libs.COMPOSE_UI_TOOLING}:${Versions.COMPOSE}")
+        api("${Libs.COMPOSE_FOUNDATION_LAYOUT}:${Versions.COMPOSE}")
+        api("${Libs.COMPOSE_MATERIAL}:${Versions.COMPOSE}")
+        api("${Libs.COMPOSE_RUNTIME_LIVEDATA}:${Versions.COMPOSE}")
+        api("${Libs.COMPOSE_RUNTIME}:${Versions.COMPOSE}")
+        api("${Libs.COMPOSE_ANIMATION}:${Versions.COMPOSE}")
+        api("${Libs.COMPOSE_ANIMATION_CORE}:${Versions.COMPOSE}")
+        api("${Libs.COMPOSE_ICON}:${Versions.COMPOSE}")
         api(Libs.COMPOSE_TEST)
         api("${Libs.COMPOSE_PAGING}:$composePaging")
         api("${Libs.COMPOSE_VIEW_MODEL}:$composeViewModel")
         api("${Libs.COMPOSE_ACTIVITY}:$composeActivity")
         api("${Libs.COMPOSE_CONSTRAINT}:$composeConstraint")
         api("${Libs.COMPOSE_NAVIGATION}:$composeNavigation")
-        api("${Libs.INSETS}:$accompanist")
+        api("${Libs.ACCOMPANIST_INSETS}:$accompanist")
+        api("${Libs.ACCOMPANIST_INSETS_UI}:$accompanist")
+        api("${Libs.ACCOMPANIST_NAVIGATION_ANIMATION}:$accompanist")
+        api("${Libs.ACCOMPANIST_PERMISSION}:$accompanist")
         api("${Libs.COIL}:$coil")
         api("${Libs.COIL_COMPOSE}:$coil")
-        api("${Libs.ACCOMPANIST_PERMISSION}:$accompanist")
         api("${Libs.FAKER}:$faker")
         api("${Libs.HILT_BINDER}:$binder")
         api("${Libs.HILT_BINDER_COMPILER}:$binder")
