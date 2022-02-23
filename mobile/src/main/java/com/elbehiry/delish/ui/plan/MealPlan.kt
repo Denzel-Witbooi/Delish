@@ -17,7 +17,6 @@
 package com.elbehiry.delish.ui.plan
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -51,6 +50,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.elbehiry.delish.ui.widget.DaysHeader
 import com.elbehiry.delish.ui.widget.LoadingContent
 import com.elbehiry.model.RecipesItem
@@ -58,12 +58,13 @@ import com.elbehiry.delish.R
 import com.elbehiry.delish.ui.widget.EmptyView
 import com.elbehiry.delish.ui.widget.ToggleAddButton
 
-@ExperimentalAnimationApi
 @Composable
 fun MealPlan(
-    viewModel: MealPlanViewModel,
     onDetail: (Int) -> Unit
 ) {
+
+    val viewModel: MealPlanViewModel = hiltViewModel()
+
     val state by viewModel.viewState.collectAsState()
     var select by remember { mutableStateOf(0) }
 

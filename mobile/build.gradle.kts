@@ -88,7 +88,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = Versions.COMPOSE
+        kotlinCompilerExtensionVersion = Versions.COMPOSE_COMPILER
     }
 
     buildFeatures {
@@ -136,6 +136,7 @@ dependencies {
     // Dagger Hilt
     implementation(Libs.HILT_ANDROID)
     implementation(Libs.HILT_VIEWMODEL)
+    implementation(Libs.HILT_COMPOSE)
     kapt(Libs.HILT_COMPILER)
     kapt(Libs.ANDROIDX_HILT_COMPILER)
     kaptAndroidTest(Libs.HILT_COMPILER)
@@ -173,10 +174,14 @@ dependencies {
     implementation(Libs.COMPOSE_PAGING)
     implementation(Libs.COMPOSE_VIEW_MODEL)
 
-    implementation(Libs.INSETS)
+    // ACCOMPANIST
+    implementation(Libs.ACCOMPANIST_INSETS)
+    implementation(Libs.ACCOMPANIST_INSETS_UI)
+    implementation(Libs.ACCOMPANIST_NAVIGATION_ANIMATION)
+    implementation(Libs.ACCOMPANIST_PERMISSION)
+
     implementation(Libs.COIL)
     implementation(Libs.COIL_COMPOSE)
-    implementation(Libs.ACCOMPANIST_PERMISSION)
 
     androidTestImplementation(Libs.COMPOSE_TEST)
     // play service

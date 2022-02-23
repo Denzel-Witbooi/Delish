@@ -34,7 +34,6 @@ class SearchFragment : Fragment() {
 
     private val searchArgs: SearchFragmentArgs by navArgs()
 
-    @ExperimentalAnimationApi
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

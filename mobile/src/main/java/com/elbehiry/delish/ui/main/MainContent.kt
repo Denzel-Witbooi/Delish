@@ -17,8 +17,6 @@
 package com.elbehiry.delish.ui.main
 
 import androidx.annotation.StringRes
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.BottomNavigation
@@ -50,20 +48,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.elbehiry.delish.R
 import com.elbehiry.delish.ui.bookmark.BookMark
-import com.elbehiry.delish.ui.bookmark.BookmarkViewModel
 import com.elbehiry.delish.ui.recipes.HomeContent
 import com.elbehiry.delish.ui.plan.MealPlan
-import com.elbehiry.delish.ui.plan.MealPlanViewModel
-import com.elbehiry.delish.ui.recipes.RecipesViewModel
 import com.google.accompanist.insets.navigationBarsPadding
+import com.google.accompanist.insets.statusBarsPadding
 
-@ExperimentalFoundationApi
-@ExperimentalAnimationApi
 @Composable
 fun MainContent(
-    viewModel: RecipesViewModel,
-    bookmarkViewModel: BookmarkViewModel,
-    mealPlanViewModel: MealPlanViewModel,
     onIngredientContent: () -> Unit,
     onCuisineSearch: (String) -> Unit,
     onDetails: (Int) -> Unit,
@@ -74,6 +65,7 @@ fun MainContent(
     val (selectedTab, setSelectedTab) = remember { mutableStateOf(DelishHomeTabs.Home) }
     val tabs = DelishHomeTabs.values()
     Scaffold(
+        modifier = Modifier.statusBarsPadding().navigationBarsPadding(),
         backgroundColor = MaterialTheme.colors.primarySurface,
         topBar = {
             HomeTopBar {
@@ -104,14 +96,13 @@ fun MainContent(
     ) {
         when (selectedTab) {
             DelishHomeTabs.Home -> HomeContent(
-                viewModel,
-                onIngredientContent,
-                onCuisineSearch,
-                onDetails,
-                onIngredientSearch
+                onIngredientContent = onIngredientContent,
+                onCuisineSearch = onCuisineSearch,
+                onDetails = onDetails,
+                onIngredientSearch = onIngredientSearch
             )
-            DelishHomeTabs.BookMark -> BookMark(bookmarkViewModel, onDetails)
-            DelishHomeTabs.MealPlan -> MealPlan(mealPlanViewModel, onDetails)
+            DelishHomeTabs.BookMark -> BookMark(onDetails)
+            DelishHomeTabs.MealPlan -> MealPlan(onDetails)
         }
     }
 }

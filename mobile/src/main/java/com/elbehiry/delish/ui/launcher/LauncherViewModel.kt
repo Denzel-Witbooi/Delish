@@ -32,15 +32,11 @@ class LauncherViewModel @Inject constructor(
     private val onBoardingCompletedUseCase: OnBoardingCompletedUseCase
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(LauncherViewState())
+    private val _state = MutableStateFlow(LauncherViewState.Empty)
     val state: StateFlow<LauncherViewState>
         get() = _state
 
     init {
-        getLaunchDestination()
-    }
-
-    private fun getLaunchDestination() {
         viewModelScope.launch {
             onBoardingCompletedUseCase(Unit).collect { result ->
                 if (result is Result.Success) {
@@ -64,4 +60,8 @@ enum class LaunchDestination {
 
 data class LauncherViewState(
     val launchDestination: LaunchDestination = LaunchDestination.ON_BOARDING,
-)
+) {
+    companion object {
+        val Empty = LauncherViewState()
+    }
+}

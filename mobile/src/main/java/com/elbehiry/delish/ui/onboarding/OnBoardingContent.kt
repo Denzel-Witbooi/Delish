@@ -16,10 +16,8 @@
 
 package com.elbehiry.delish.ui.onboarding
 
-import androidx.annotation.VisibleForTesting
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
@@ -63,31 +61,30 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.elbehiry.delish.R
-import com.elbehiry.delish.ui.main.launchMainActivity
+import com.elbehiry.delish.ui.util.rememberFlowWithLifecycle
+import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.insets.statusBarsPadding
 
 const val currentPageAnimation = "currentPageAnimation"
 const val rotateAnimation = "rotateAnimation"
 
-@ExperimentalAnimationApi
-@VisibleForTesting
 @Composable
 fun OnBoardingContent(
     onBoardingFinished: () -> Unit
 ) {
-    val viewModel: OnBoardingViewModel = viewModel()
+    val viewModel: OnBoardingViewModel = hiltViewModel()
     val onBoardingItemsList = viewModel.getOnBoardingItemsList()
-    val launchDestination: Boolean by viewModel.viewState.collectAsState()
+    val launchDestination by rememberFlowWithLifecycle(
+        viewModel.viewState).collectAsState(false)
 
     if (launchDestination) {
-        launchMainActivity(context = LocalContext.current)
         onBoardingFinished()
     }
 
@@ -105,7 +102,7 @@ fun OnBoardingContent(
     val getStartedVisible = remember { mutableStateOf(false) }
 
     Box(
-        modifier = Modifier.background(Color.White).fillMaxSize()
+        modifier = Modifier.background(Color.White).fillMaxSize().navigationBarsPadding()
     ) {
         Surface(
             modifier = Modifier.fillMaxWidth().align(Alignment.BottomCenter),
@@ -266,4 +263,10 @@ fun OnBoardingSlide(selected: Boolean, color: Color, icon: ImageVector) {
         contentDescription = null,
         tint = if (selected) color else Color.Gray
     )
+}
+
+@Preview
+@Composable
+fun PreviewOnBoardingContent(){
+    OnBoardingContent{}
 }

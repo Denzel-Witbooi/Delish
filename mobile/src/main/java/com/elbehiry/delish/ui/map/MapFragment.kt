@@ -32,7 +32,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MapFragment : Fragment() {
     private val mapViewModel: MapViewModel by viewModels()
 
-    @ExperimentalPermissionsApi
+    @OptIn(ExperimentalPermissionsApi::class)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

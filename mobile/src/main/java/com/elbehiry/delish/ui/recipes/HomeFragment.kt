@@ -35,8 +35,6 @@ import com.google.accompanist.insets.ProvideWindowInsets
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
-    @ExperimentalFoundationApi
-    @ExperimentalAnimationApi
     @SuppressLint("VisibleForTests")
     override fun onCreateView(
         inflater: LayoutInflater,

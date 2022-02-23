@@ -18,6 +18,7 @@ package com.elbehiry.delish.ui.recipes
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.elbehiry.delish.ui.util.WhileViewSubscribed
 import com.elbehiry.model.CuisineItem
 import com.elbehiry.model.IngredientItem
 import com.elbehiry.model.RecipesItem
@@ -27,15 +28,14 @@ import com.elbehiry.shared.domain.recipes.bookmark.SaveRecipeSuspendUseCase
 import com.elbehiry.shared.domain.recipes.cuisines.GetAvailableCuisinesUseCase
 import com.elbehiry.shared.domain.recipes.ingredients.GetIngredientsUseCase
 import com.elbehiry.shared.domain.recipes.random.GetRandomRecipesUseCase
-import com.elbehiry.shared.result.Result
 import com.elbehiry.shared.result.data
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -44,54 +44,35 @@ const val randomRecipesCount = 20
 
 @HiltViewModel
 class RecipesViewModel @Inject constructor(
-    private val getRandomRecipesUseCase: GetRandomRecipesUseCase,
-    private val getAvailableCuisinesUseCase: GetAvailableCuisinesUseCase,
+    getRandomRecipesUseCase: GetRandomRecipesUseCase,
+    getAvailableCuisinesUseCase: GetAvailableCuisinesUseCase,
+    getIngredientsUseCase: GetIngredientsUseCase,
     private val saveRecipeUseCase: SaveRecipeSuspendUseCase,
     private val deleteRecipeUseCase: DeleteRecipeSuspendUseCase,
-    private val isRecipeSavedUseCase: IsRecipeSavedSuspendUseCase,
-    private val getIngredientsUseCase: GetIngredientsUseCase
+    private val isRecipeSavedUseCase: IsRecipeSavedSuspendUseCase
 ) : ViewModel() {
 
-    val hasError = MutableStateFlow(false)
-    val loading = MutableStateFlow(false)
+    private val hasError = MutableStateFlow(false)
+    private val loading = MutableStateFlow(false)
 
-    private val _state = MutableStateFlow(RecipesViewState())
-    val viewState: StateFlow<RecipesViewState>
-        get() = _state
-
-    init {
-        getHomeContent()
-    }
-
-    fun getHomeContent() {
-        viewModelScope.launch {
-            combine(
-                getRandomRecipesUseCase(
-                    GetRandomRecipesUseCase.Params.create(
-                        null,
-                        randomRecipesCount
-                    )
-                ),
-                getIngredientsUseCase(Unit),
-                getAvailableCuisinesUseCase(Unit)
-            ) { randomRecipes, ingredients, cuisines ->
-                hasError.value = cuisines is Result.Error || ingredients is Result.Error
-                RecipesViewState(
-                    ingredientList = ingredients.data ?: emptyList(),
-                    cuisinesList = cuisines.data ?: emptyList(),
-                    randomRecipes = randomRecipes.data ?: emptyList()
-                )
-            }.onStart {
-                loading.value = true
-            }.catch {
-                hasError.value = true
-            }.onCompletion {
-                loading.value = false
-            }.collect {
-                _state.value = it
-            }
-        }
-    }
+    val viewState: StateFlow<RecipesViewState> = combine(
+        getIngredientsUseCase(Unit).map { it.data ?: emptyList() },
+        getAvailableCuisinesUseCase(Unit).map { it.data ?: emptyList() },
+        getRandomRecipesUseCase(
+            GetRandomRecipesUseCase.Params.create(null, randomRecipesCount)
+        ).map { it.data ?: emptyList() },
+        loading,
+        hasError,
+        ::RecipesViewState
+    ).catch {
+        hasError.value = true
+    }.onCompletion {
+        loading.value = false
+    }.stateIn(
+        scope = viewModelScope,
+        started = WhileViewSubscribed,
+        initialValue = RecipesViewState.Empty,
+    )
 
     fun onBookMark(recipesItem: RecipesItem) {
         viewModelScope.launch {
@@ -102,10 +83,17 @@ class RecipesViewModel @Inject constructor(
             }
         }
     }
-
-    data class RecipesViewState(
-        val ingredientList: List<IngredientItem> = emptyList(),
-        val cuisinesList: List<CuisineItem> = emptyList(),
-        val randomRecipes: List<RecipesItem> = emptyList()
-    )
 }
+
+data class RecipesViewState(
+    val ingredientList: List<IngredientItem> = emptyList(),
+    val cuisinesList: List<CuisineItem> = emptyList(),
+    val randomRecipes: List<RecipesItem> = emptyList(),
+    val isLoading: Boolean = true,
+    val hasError: Boolean = false
+) {
+    companion object {
+        val Empty = RecipesViewState()
+    }
+}
+

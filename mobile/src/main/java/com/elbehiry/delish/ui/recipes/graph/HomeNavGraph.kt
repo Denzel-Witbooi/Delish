@@ -49,8 +49,6 @@ fun HomeNavGraph(
     onDetails: (Int) -> Unit,
 ) {
     val recipesViewModel: RecipesViewModel = viewModel()
-    val bookmarkViewModel: BookmarkViewModel = viewModel()
-    val mealPlanViewModel: MealPlanViewModel = viewModel()
     val navController = rememberNavController()
     val actions = remember(navController) { MainActions(navController) }
 
@@ -60,9 +58,6 @@ fun HomeNavGraph(
     ) {
         composable((MainDestinations.MAIN_ROUTE)) {
             MainContent(
-                viewModel = recipesViewModel,
-                bookmarkViewModel = bookmarkViewModel,
-                mealPlanViewModel = mealPlanViewModel,
                 onIngredientContent = actions.onIngredientContent,
                 onCuisineSearch = onCuisineSearch,
                 onDetails = onDetails,

@@ -29,21 +29,33 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.elbehiry.delish.R
+import com.elbehiry.delish.ui.util.rememberFlowWithLifecycle
 import kotlinx.coroutines.delay
 
 private const val SplashWaitTime: Long = 2000
 
 @Composable
 fun LauncherView(
-    modifier: Modifier = Modifier,
     onLauncherComplete: (LaunchDestination) -> Unit
 ) {
-    val viewModel: LauncherViewModel = viewModel()
-    val viewState by viewModel.state.collectAsState()
+    LauncherView(
+        viewModel = hiltViewModel(),
+        onLauncherComplete = onLauncherComplete
+    )
+}
+
+@Composable
+fun LauncherView(
+    viewModel: LauncherViewModel,
+    onLauncherComplete: (LaunchDestination) -> Unit
+) {
+    val viewState by rememberFlowWithLifecycle(viewModel.state)
+        .collectAsState(LauncherViewState.Empty)
     Box(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colors.background),
         contentAlignment = Alignment.Center
@@ -58,5 +70,13 @@ fun LauncherView(
             painter = painterResource(id = R.drawable.ic_delish_logo),
             contentDescription = null
         )
+    }
+}
+
+
+@Preview
+@Composable
+fun PreviewLauncherView() {
+    LauncherView {
     }
 }

@@ -22,8 +22,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import com.google.accompanist.coil.rememberCoilPainter
-import com.google.accompanist.imageloading.ImageLoadState
 
 @Composable
 fun NetworkImage(
@@ -35,18 +33,18 @@ fun NetworkImage(
     loadingContent: @Composable () -> Unit
 ) {
     Box(modifier) {
-        val painter = rememberCoilPainter(
-            request = url,
-            fadeIn = fadeIn
-        )
-        Image(
-            painter = painter,
-            contentDescription = contentDescription,
-            contentScale = contentScale,
-            modifier = Modifier.fillMaxSize()
-        )
-        if (painter.loadState is ImageLoadState.Loading) {
-            loadingContent()
-        }
+//        val painter = rememberCoilPainter(
+//            request = url,
+//            fadeIn = fadeIn
+//        )
+//        Image(
+//            painter = painter,
+//            contentDescription = contentDescription,
+//            contentScale = contentScale,
+//            modifier = Modifier.fillMaxSize()
+//        )
+//        if (painter.loadState is ImageLoadState.Loading) {
+//            loadingContent()
+//        }
     }
 }

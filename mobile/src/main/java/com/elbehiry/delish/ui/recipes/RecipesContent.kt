@@ -45,29 +45,30 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.elbehiry.delish.R
+import com.elbehiry.delish.ui.util.rememberFlowWithLifecycle
 import com.elbehiry.delish.ui.widget.EmptyView
 import com.elbehiry.delish.ui.widget.LoadingContent
 import com.elbehiry.delish.ui.widget.NotificationBanner
 import com.elbehiry.model.RecipesItem
 
-@ExperimentalFoundationApi
-@ExperimentalAnimationApi
 @Composable
 fun HomeContent(
-    viewModel: RecipesViewModel,
     onIngredientContent: () -> Unit,
     onCuisineSearch: (String) -> Unit,
     onDetails: (Int) -> Unit,
     onIngredientSearch: (String) -> Unit
 ) {
-    val viewState by viewModel.viewState.collectAsState()
-    val hasError by viewModel.hasError.collectAsState()
-    val loading by viewModel.loading.collectAsState()
 
-    LoadingContent(loading) {
+    val viewModel: RecipesViewModel = hiltViewModel()
+
+    val viewState by rememberFlowWithLifecycle(flow = viewModel.viewState)
+        .collectAsState(RecipesViewState.Empty)
+
+    LoadingContent(viewState.isLoading) {
         Surface(modifier = Modifier.fillMaxSize()) {
-            AnimatedVisibility(visible = !hasError) {
+            AnimatedVisibility(visible = !viewState.hasError) {
                 LazyColumn {
                     item { HeaderTitle() }
                     item {
@@ -87,7 +88,7 @@ fun HomeContent(
                     item { Spacer(modifier = Modifier.padding(50.dp)) }
                 }
             }
-            AnimatedVisibility(visible = hasError) {
+            AnimatedVisibility(visible = viewState.hasError) {
                 EmptyView(
                     titleText = stringResource(id = R.string.ops),
                     descText = stringResource(id = R.string.something_went_wrong)
@@ -97,7 +98,6 @@ fun HomeContent(
     }
 }
 
-@ExperimentalAnimationApi
 @Composable
 fun NotificationItem(errorMessage: String) {
     val isOpen = remember { mutableStateOf(errorMessage.isNotEmpty()) }
